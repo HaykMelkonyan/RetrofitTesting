@@ -16,12 +16,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Get branch name
-        run: |
-          echo "GITHUB_REF=${GITHUB_REF}"
-          echo "GITHUB_REF=${GITHUB_REF}"
-          branch_name=$(echo $GITHUB_REF | awk -F"/" '{print $(NF-1)}')
-          echo "BRANCH_NAME=${branch_name}"
-          shell: /usr/bin/bash -e {0}
+        shell: bash
+        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >>$GITHUB_OUTPUT
+        id: get_branch_name
 
 
       - name: Comment Branch Name
