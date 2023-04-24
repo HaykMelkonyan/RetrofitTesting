@@ -18,8 +18,10 @@ jobs:
       - name: Get branch name
         run: |
           echo "GITHUB_REF=${GITHUB_REF}"
-          branch_name=$(echo $GITHUB_REF | sed 's/refs\/heads\///' | sed 's/refs\/pull\///' | sed 's/\/merge//')
+          echo "GITHUB_REF=${GITHUB_REF}"
+          branch_name=$(echo $GITHUB_REF | awk -F"/" '{print $(NF-1)}')
           echo "BRANCH_NAME=${branch_name}"
+          shell: /usr/bin/bash -e {0}
 
 
       - name: Comment Branch Name
