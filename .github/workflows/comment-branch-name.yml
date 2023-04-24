@@ -11,9 +11,19 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
+      - name: Get Branch Name
+        run: echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
+
       - name: Comment Branch Name
-        uses: unsplash/comment-on-pr@v1
+        uses: actions/github-script@v4
         with:
-          message: "This pull request is associated with the branch: ${{ github.head_ref }}"
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `This pull request is associated with the branch: ${{ steps.get_branch_name.outputs.branch }}`
+            })
+          octokit-version: '3.x'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
