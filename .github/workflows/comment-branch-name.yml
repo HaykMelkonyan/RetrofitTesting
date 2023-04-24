@@ -15,10 +15,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Get Branch Name
+      - name: Get branch name
         run: |
-        echo "GITHUB_REF=${GITHUB_REF}"
-        echo "{branch}={$(echo ${GITHUB_REF#refs/heads/})}" >> $GITHUB_OUTPUT
+          echo "GITHUB_REF=${GITHUB_REF}"
+          branch_name=$(echo $GITHUB_REF | sed 's/refs\/heads\///')
+          echo "BRANCH_NAME=${branch_name}"
 
       - name: Comment Branch Name
         uses: actions/github-script@v4
