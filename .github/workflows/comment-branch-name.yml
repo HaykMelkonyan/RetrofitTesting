@@ -1,5 +1,9 @@
 name: Comment Branch Name on Pull Request
-
+permissions:
+  id-token: write
+  contents: read
+  issues: write
+  pull-requests: write
 on:
   pull_request:
     types: [ opened, reopened, synchronize ]
@@ -26,4 +30,4 @@ jobs:
             })
           octokit-version: '3.x'
         env:
-          GITHUB_TOKEN: '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'
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
