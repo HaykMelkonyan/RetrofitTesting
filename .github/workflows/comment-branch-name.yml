@@ -26,4 +26,4 @@ jobs:
             })
           octokit-version: '3.x'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ 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 }}
