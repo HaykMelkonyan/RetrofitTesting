@@ -18,8 +18,9 @@ jobs:
       - name: Get branch name
         run: |
           echo "GITHUB_REF=${GITHUB_REF}"
-          branch_name=$(echo $GITHUB_REF | cut -d'/' -f 3)
+          branch_name=$(echo $GITHUB_REF | sed 's/refs\/heads\///' | sed 's/refs\/pull\///' | sed 's/\/merge//')
           echo "BRANCH_NAME=${branch_name}"
+
 
       - name: Comment Branch Name
         uses: actions/github-script@v4
