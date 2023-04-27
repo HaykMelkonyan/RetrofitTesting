@@ -1,0 +1,17 @@
+name: Add branch name to pull request
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  comment_branch_name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Add branch name to pull request
+        run: |
+          BRANCH_NAME=$(echo $GITHUB_REF | sed 's/refs\/heads\///')
+          BODY="The branch name for this pull request is $BRANCH_NAME."
+          URL="https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
+          curl -sSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -d "{\"body\":\"$BODY\"}" "$URL"
