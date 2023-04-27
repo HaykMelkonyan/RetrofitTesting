@@ -1,0 +1,36 @@
+name: Comment Branch Name on Pull Request
+permissions:
+  id-token: write
+  contents: read
+  issues: write
+  pull-requests: write
+on:
+  pull_request:
+    types: [ opened, reopened, synchronize, edited ]
+
+jobs:
+  comment_branch_name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Get branch name
+        shell: bash
+        run: echo "branch=$(echo ${GITHUB_HEAD_REF#refs/heads/})" >>$GITHUB_OUTPUT
+        id: get_branch_name
+
+
+      - name: Comment Branch Name
+        uses: actions/github-script@v4
+        with:
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `This pull request is associated with the branch: ${{ steps.get_branch_name.outputs.branch }}`
+            })
+          octokit-version: '3.x'
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
