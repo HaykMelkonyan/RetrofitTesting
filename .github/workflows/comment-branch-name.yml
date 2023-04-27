@@ -1,7 +1,8 @@
 name: Add branch name to pull request
 on:
-  pull_request:
-    types: [opened]
+  push:
+    branches:
+      - '**'
 
 jobs:
   comment_branch_name:
